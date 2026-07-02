@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>College Clubs</title>
+
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* PAGE */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    margin: 0;
+    padding-bottom: 90px;
+}
+
+/* HEADER */
+.club-header {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+    padding: 40px 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.club-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.club-header p {
+    margin-top: 10px;
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* CLUB GRID */
+.club-container {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* CLUB CARD */
+.club-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.club-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border-color: rgba(14, 165, 233, 0.3);
+}
+
+/* IMAGE */
+.club-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENT */
+.club-content {
+    padding: 20px;
+}
+
+.club-content h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.club-content p {
+    color: #94a3b8;
+    margin-top: 10px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* BUTTON */
+.join-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.join-btn:hover {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    transform: scale(1.02);
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 1001;
+}
+
+.back-btn:hover {
+    background: #0ea5e9;
+    transform: scale(1.05);
+}
+
+.back-btn span {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACK BUTTON -->
+<div class="back-btn" onclick="history.back()">
+    <span class="material-icons">arrow_back</span>
+</div>
+
+<!-- HEADER -->
+<div class="club-header">
+
+    <h1>👥 College Clubs</h1>
+
+    <p>
+        Explore your campus communities, activities and student clubs.
+    </p>
+
+</div>
+
+<!-- CLUBS -->
+<div class="club-container">
+
+    <!-- Coding Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4">
+
+        <div class="club-content">
+
+            <h2>💻 Coding Club</h2>
+
+            <p>
+                Learn web development, AI, app development and participate
+                in hackathons & coding competitions.
+            </p>
+
+             <button class="join-btn"data-club="Coding Club" onclick="joinClub('Coding Club', this)">Join Club</button>
+        </div>
+
+    </div>
+
+    <!-- Drama Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1503095396549-807759245b35">
+
+        <div class="club-content">
+
+            <h2>🎭 Drama Club</h2>
+
+            <p>
+                Showcase acting talent, theatre performances and stage events
+                with creative students.
+            </p>
+            <button class="join-btn" data-club="Drama Club" onclick="joinClub('Drama Club', this)">Join Club</button>
+        </div>
+
+    </div>
+
+    <!-- Sports Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b">
+
+        <div class="club-content">
+
+            <h2>⚽ Sports Club</h2>
+
+            <p>
+                Participate in football, cricket, volleyball and intercollege
+                sports tournaments.
+            </p>
+
+             <button class="join-btn"
+data-club="Sports Club"
+onclick="joinClub('Sports Club', this)">
+Join Club
+</button>
+
+        </div>
+
+    </div>
+
+    <!-- Music Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f">
+
+        <div class="club-content">
+
+            <h2>🎵 Music Club</h2>
+
+            <p>
+                Explore singing, instruments and music performances during
+                college festivals.
+            </p>
+
+             <button class="join-btn"
+data-club="Music Club"
+onclick="joinClub('Music Club', this)">
+Join Club
+</button>
+
+        </div>
+
+    </div>
+
+    <!-- Photography Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32">
+
+        <div class="club-content">
+
+            <h2>📸 Photography Club</h2>
+
+            <p>
+                Capture amazing moments, college events and creative
+                photography projects.
+            </p>
+
+             <button class="join-btn"
+data-club="Photography Club"
+onclick="joinClub('Photography Club', this)">
+Join Club
+</button>
+
+        </div>
+
+    </div>
+
+    <!-- Robotics Club -->
+    <div class="club-card">
+
+        <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a">
+
+        <div class="club-content">
+
+            <h2>🤖 Robotics Club</h2>
+
+            <p>
+                Build robots, automation systems and participate in technical
+                innovation competitions.
+            </p>
+
+                <button class="join-btn" data-club="Robotics Club" onclick="joinClub('Robotics Club', this)">Join Club</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// JOIN CLUB
+function joinClub(clubName, btn) {
+
+    let joinedClubs =
+    JSON.parse(localStorage.getItem("joinedClubs")) || [];
+
+    // Already joined
+    if (joinedClubs.includes(clubName)) {
+
+        alert("✅ Already Joined " + clubName);
+        return;
+    }
+
+    // Save
+    joinedClubs.push(clubName);
+
+    localStorage.setItem(
+        "joinedClubs",
+        JSON.stringify(joinedClubs)
+    );
+
+    // Update button
+    btn.innerHTML = "Joined ✅";
+    btn.style.background = "#22c55e";
+
+    alert("🎉 Successfully Joined " + clubName);
+}
+
+// PAGE LOAD
+window.onload = function () {
+
+    let joinedClubs =
+    JSON.parse(localStorage.getItem("joinedClubs")) || [];
+
+    document.querySelectorAll(".join-btn")
+    .forEach(btn => {
+
+        const clubName = btn.dataset.club;
+
+        // Reset default
+        btn.innerHTML = "Join Club";
+        btn.style.background =
+        "linear-gradient(135deg,#2563eb,#06b6d4)";
+
+        // Joined check
+        if (joinedClubs.includes(clubName)) {
+
+            btn.innerHTML = "Joined ✅";
+            btn.style.background = "#22c55e";
+        }
+
+    });
+
+};
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Campus</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    padding-bottom: 100px;
+}
+
+/* CONTAINER */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.header h2 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.header p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0ea5e9;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0;
+    margin-bottom: 25px;
+}
+
+/* CARD */
+.card {
+    padding: 30px 20px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* COLORS */
+.red { background: linear-gradient(135deg, #ef4444, #f97316); }
+.blue { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+.pink { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+.green { background: linear-gradient(135deg, #10b981, #14b8a6); }
+
+.card .material-icons {
+    font-size: 2.2rem;
+}
+
+/* POSTS */
+#postsContainer {
+    padding: 0;
+}
+
+/* POST */
+.feed-post {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* POST HEADER */
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+}
+
+.post-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-header h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.post-header p {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* IMAGE */
+.feed-post img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENT */
+.feed-content {
+    padding: 16px;
+}
+
+.feed-content h3 {
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.feed-content p {
+    color: #94a3b8;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* ACTIONS */
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.2);
+}
+
+.action-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    color: #38bdf8;
+}
+
+.action-btn .material-icons {
+    font-size: 1.25rem;
+}
+
+/* MODAL */
+.post-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* BOX */
+.post-box {
+    width: 90%;
+    max-width: 420px;
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: popup 0.3s ease;
+}
+
+/* POPUP CODE */
+@keyframes popup {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* INPUT */
+.post-box input[type="text"],
+.post-box textarea {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.post-box input:focus,
+.post-box textarea:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+
+.post-box input[type="file"] {
+    margin-top: 15px;
+    color: #94a3b8;
+}
+
+/* BUTTON */
+.post-box button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.post-box button:hover {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+/* CLOSE */
+.close-btn {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item .material-icons {
+    font-size: 1.6rem;
+}
+
+.nav-item.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div>
+<h2>Hello Buddies 👋</h2>
+<p>Welcome To Smart Campus</p>
+</div>
+
+<img src="https://i.pravatar.cc/150?img=3"
+class="profile">
+
+</div>
+
+<!-- CARDS -->
+
+<div class="grid">
+
+<div class="card red">
+
+<span class="material-icons">
+event
+</span>
+
+<h3>Events</h3>
+
+</div>
+
+<div class="card blue">
+
+<span class="material-icons">
+dynamic_feed
+</span>
+
+<h3>Latest Posts</h3>
+
+</div>
+
+<div class="card pink">
+
+<span class="material-icons">
+groups
+</span>
+
+<h3>Clubs</h3>
+
+</div>
+
+<div class="card green"
+onclick="openPostModal()">
+
+<span class="material-icons">
+add_circle
+</span>
+
+<h3>Create Post</h3>
+
+</div>
+
+</div>
+
+<!-- POSTS -->
+
+<div id="postsContainer"></div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="post-modal"
+id="postModal">
+
+<div class="post-box">
+
+<span class="close-btn"
+onclick="closePostModal()">
+✖
+</span>
+
+<h2>Create New Post 🚀</h2>
+
+<input
+type="text"
+id="postTitle"
+placeholder="Write title...">
+
+<textarea
+id="postCaption"
+placeholder="Write caption..."
+rows="4"></textarea>
+
+<input
+type="file"
+id="postImage"
+accept="image/*">
+
+<button onclick="addPost()">
+Post Now
+</button>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item active">
+<span class="material-icons">
+home
+</span>
+</div>
+
+<div class="nav-item">
+<span class="material-icons">
+event
+</span>
+</div>
+
+<div class="nav-item">
+<span class="material-icons">
+add_box
+</span>
+</div>
+
+<div class="nav-item">
+<span class="material-icons">
+groups
+</span>
+</div>
+
+<div class="nav-item">
+<span class="material-icons">
+person
+</span>
+</div>
+
+</div>
+
+<script>
+
+/* OPEN MODAL */
+
+function openPostModal(){
+
+document.getElementById("postModal")
+.style.display="flex";
+
+}
+
+/* CLOSE MODAL */
+
+function closePostModal(){
+
+document.getElementById("postModal")
+.style.display="none";
+
+}
+
+/* ADD POST */
+
+function addPost(){
+
+const title =
+document.getElementById("postTitle").value;
+
+const caption =
+document.getElementById("postCaption").value;
+
+const image =
+document.getElementById("postImage").files[0];
+
+if(title==="" || caption==="" || !image){
+
+alert("Please fill all details");
+return;
+
+}
+
+const reader = new FileReader();
+
+reader.onload=function(e){
+
+const post = {
+
+title:title,
+caption:caption,
+image:e.target.result,
+likes:0
+
+};
+
+let posts =
+JSON.parse(localStorage.getItem("posts")) || [];
+
+posts.unshift(post);
+
+localStorage.setItem(
+"posts",
+JSON.stringify(posts)
+);
+
+loadPosts();
+
+closePostModal();
+
+document.getElementById("postTitle").value="";
+document.getElementById("postCaption").value="";
+document.getElementById("postImage").value="";
+
+};
+
+reader.readAsDataURL(image);
+
+}
+
+/* LOAD POSTS */
+
+function loadPosts(){
+
+const container =
+document.getElementById("postsContainer");
+
+let posts =
+JSON.parse(localStorage.getItem("posts")) || [];
+
+container.innerHTML="";
+
+posts.forEach((post,index)=>{
+
+container.innerHTML += `
+
+<div class="feed-post">
+
+<div class="post-header">
+
+<img src="https://i.pravatar.cc/150?img=${index+5}"
+class="post-profile">
+
+<div>
+<h4>Campus Student</h4>
+<p>Just now</p>
+</div>
+
+</div>
+
+<img src="${post.image}">
+
+<div class="feed-content">
+
+<h3>${post.title}</h3>
+
+<p>${post.caption}</p>
+
+</div>
+
+<div class="post-actions">
+
+<div class="action-btn"
+onclick="likePost(${index})">
+
+<span class="material-icons">
+favorite
+</span>
+
+<span>${post.likes}</span>
+
+</div>
+
+<div class="action-btn">
+
+<span class="material-icons">
+chat_bubble_outline
+</span>
+
+Comment
+
+</div>
+
+<div class="action-btn">
+
+<span class="material-icons">
+share
+</span>
+
+Share
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* LIKE */
+
+function likePost(index){
+
+let posts =
+JSON.parse(localStorage.getItem("posts")) || [];
+
+posts[index].likes++;
+
+localStorage.setItem(
+"posts",
+JSON.stringify(posts)
+);
+
+loadPosts();
+
+}
+
+/* PAGE LOAD */
+
+window.onload=function(){
+
+loadPosts();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Upcoming Events</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* BODY */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    margin: 0;
+    padding-bottom: 100px;
+}
+
+/* HEADER */
+.header {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 30px 20px;
+    color: white;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    margin-top: 10px;
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* EVENTS */
+.events-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* EVENT CARD */
+.event-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border-color: rgba(14, 165, 233, 0.3);
+}
+
+/* IMAGE */
+.event-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENT */
+.event-content {
+    padding: 20px;
+}
+
+.event-content h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.event-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    color: #38bdf8;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.event-content p {
+    margin-top: 12px;
+    color: #94a3b8;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* BUTTON */
+.register-btn {
+    margin-top: 18px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+.register-btn:hover {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    transform: scale(1.02);
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item .material-icons {
+    font-size: 1.6rem;
+}
+
+.nav-item.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* REGISTER MODAL */
+.register-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.register-box {
+    width: 90%;
+    max-width: 400px;
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: popup 0.3s ease;
+}
+
+.register-box h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.register-box input {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.register-box input:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+
+.register-box button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.register-box button:hover {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+.close-btn {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+}
+
+@keyframes popup {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<h1>📅 Upcoming Events</h1>
+
+<p>
+Explore campus activities, hackathons and cultural events 🚀
+</p>
+
+</div>
+
+<!-- EVENTS -->
+
+<div class="events-container">
+
+<!-- HACKATHON -->
+
+<div class="event-card">
+
+<img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200">
+
+<div class="event-content">
+
+<h2>💻 National Hackathon 2026</h2>
+
+<div class="event-date">
+
+<span class="material-icons">
+calendar_month
+</span>
+
+25 May 2026
+
+</div>
+
+<p>
+Join developers and innovators for a 24-hour coding challenge.
+Build AI apps, websites and smart campus solutions.
+</p>
+
+<button class="register-btn"
+onclick="registerEvent('Hackathon')">
+
+Register Now
+
+</button>
+
+</div>
+
+</div>
+
+<!-- TRADITIONAL DAY -->
+
+<div class="event-card">
+
+<img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200">
+
+<div class="event-content">
+
+<h2>👘 Traditional Day</h2>
+
+<div class="event-date">
+
+<span class="material-icons">
+calendar_month
+</span>
+
+2 June 2026
+
+</div>
+
+<p>
+Celebrate cultural diversity with traditional outfits,
+dance performances and campus photography.
+</p>
+
+<button class="register-btn"
+onclick="registerEvent('Traditional Day')">
+
+Register Now
+
+</button>
+
+</div>
+
+</div>
+
+<!-- HISTORICAL EVENT -->
+
+<div class="event-card">
+
+<img src="https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=1200">
+
+<div class="event-content">
+
+<h2>🏛 Historical Awareness Event</h2>
+
+<div class="event-date">
+
+<span class="material-icons">
+calendar_month
+</span>
+
+10 May 2026
+
+</div>
+
+<p>
+Explore India's historical heritage through exhibitions,
+presentations and interactive activities.
+</p>
+
+<button class="register-btn"
+onclick="registerEvent('Historical Event')">
+
+Register Now
+
+</button>
+
+</div>
+
+</div>
+
+<!-- SPORTS -->
+
+<div class="event-card">
+
+<img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200">
+
+<div class="event-content">
+
+<h2>⚽ Sports Tournament</h2>
+
+<div class="event-date">
+
+<span class="material-icons">
+calendar_month
+</span>
+
+15 May 2026
+
+</div>
+
+<p>
+Participate in football, cricket and volleyball tournaments
+with students from different colleges.
+</p>
+
+<button class="register-btn"
+onclick="registerEvent('Sports Tournament')">
+
+Register Now
+
+</button>
+
+</div>
+
+</div>
+
+<!-- MUSIC FEST -->
+
+<div class="event-card">
+
+<img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1200">
+
+<div class="event-content">
+
+<h2>🎵 Music Fest</h2>
+
+<div class="event-date">
+
+<span class="material-icons">
+calendar_month
+</span>
+
+20 April 2026
+
+</div>
+
+<p>
+Enjoy live singing, bands, DJ nights and cultural performances
+during the annual campus fest.
+</p>
+
+<button class="register-btn"
+onclick="registerEvent('Music Fest')">
+
+Register Now
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item"
+onclick="window.location.href='dashboard.html'">
+
+<span class="material-icons">
+home
+</span>
+
+</div>
+
+<div class="nav-item active">
+
+<span class="material-icons">
+event
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='addPost.html'">
+
+<span class="material-icons">
+add_box
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='clubs.html'">
+
+<span class="material-icons">
+groups
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='profile.html'">
+
+<span class="material-icons">
+person
+</span>
+
+</div>
+
+</div>
+
+<script>
+
+/* REGISTER EVENT */
+
+let currentEvent = "";
+
+/* OPEN REGISTER FORM */
+
+function registerEvent(eventName){
+
+currentEvent = eventName;
+
+document.getElementById("registerModal")
+.style.display = "flex";
+
+// Pre-fill student info if logged in
+const savedName = localStorage.getItem("userName") || "";
+const savedEmail = localStorage.getItem("userEmail") || "";
+
+if (savedName) document.getElementById("studentName").value = savedName;
+if (savedEmail) document.getElementById("studentEmail").value = savedEmail;
+
+}
+
+/* CLOSE FORM */
+
+function closeRegister(){
+
+document.getElementById("registerModal")
+.style.display = "none";
+
+}
+
+/* SUBMIT REGISTRATION TO BACKEND */
+
+async function submitRegistration(){
+
+const name =
+document.getElementById("studentName").value.trim();
+
+const email =
+document.getElementById("studentEmail").value.trim();
+
+const studentClass =
+document.getElementById("studentClass").value.trim();
+
+/* VALIDATION */
+
+if(name==="" || email==="" || studentClass===""){
+
+alert("Please Fill All Details");
+return;
+
+}
+
+try {
+    const response = await fetch('http://localhost:3000/api/events/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            event: currentEvent,
+            name: name,
+            email: email,
+            class: studentClass
+        })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        alert("✅ Registered Successfully For " + currentEvent);
+        
+        /* CLEAR INPUTS */
+        document.getElementById("studentName").value="";
+        document.getElementById("studentEmail").value="";
+        document.getElementById("studentClass").value="";
+
+        /* CLOSE */
+        closeRegister();
+    } else {
+        alert("❌ Registration failed: " + (data.error || "Unknown error"));
+    }
+} catch (err) {
+    console.error('Registration error:', err);
+    alert("❌ Network error connecting to server. Is backend running?");
+}
+
+}
+
+// On page load, fetch events count and mark them as seen
+window.addEventListener("load", async function() {
+    try {
+        const response = await fetch('http://localhost:3000/api/events');
+        if (response.ok) {
+            const events = await response.json();
+            localStorage.setItem("seenEventsCount", events.length);
+        }
+    } catch (err) {
+        console.error('Error fetching events:', err);
+    }
+});
+</script>
+<!-- REGISTER MODAL -->
+
+<div class="register-modal" id="registerModal">
+
+    <div class="register-box">
+
+        <span class="close-btn"
+        onclick="closeRegister()">
+        ✖
+        </span>
+
+        <h2>Event Registration 🚀</h2>
+
+        <input type="text"
+        id="studentName"
+        placeholder="Enter Your Name">
+
+        <input type="email"
+        id="studentEmail"
+        placeholder="Enter Your Email">
+
+        <input type="text"
+        id="studentClass"
+        placeholder="Enter Your Class">
+
+        <button onclick="submitRegistration()">
+            Register
+        </button>
+
+    </div>
+
+</div>
+</body>
+</html>

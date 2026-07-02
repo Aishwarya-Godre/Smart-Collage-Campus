@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Latest Campus Posts</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    padding-bottom: 100px;
+}
+
+/* HEADER */
+.header {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 30px 20px;
+    color: white;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header p {
+    margin-top: 10px;
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* POSTS CONTAINER */
+.posts-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* POST CARD */
+.post-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border-color: rgba(14, 165, 233, 0.3);
+}
+
+/* IMAGE */
+.post-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENT */
+.post-content {
+    padding: 20px;
+}
+
+/* TOP */
+.post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.user h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.user p {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* TITLE */
+.post-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+/* DESCRIPTION */
+.post-desc {
+    color: #94a3b8;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* TAGS */
+.tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* ACTIONS */
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.2);
+    margin-top: 20px;
+}
+
+.action-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    color: #38bdf8;
+}
+
+.action-btn:first-child:hover {
+    color: #ef4444;
+}
+
+/* LIVE BADGE */
+.live-badge {
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item .material-icons {
+    font-size: 1.6rem;
+}
+
+.nav-item.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<h1>🔥 Latest Campus Posts</h1>
+
+<p>
+See real-time campus updates, trending activities,
+hackathons, achievements and student moments 🚀
+</p>
+
+</div>
+
+<!-- POSTS -->
+
+<div class="posts-container" id="postsContainer">
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item"
+onclick="window.location.href='dashboard.html'">
+
+<span class="material-icons">
+home
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='upcoming.html'">
+
+<span class="material-icons">
+event
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='addPost.html'">
+
+<span class="material-icons">
+add_box
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='clubs.html'">
+
+<span class="material-icons">
+groups
+</span>
+
+</div>
+
+<div class="nav-item active"
+onclick="window.location.href='Latest.html'">
+
+<span class="material-icons">
+dynamic_feed
+</span>
+
+</div>
+
+</div>
+
+<script>
+
+async function fetchCommentsForPost(postId) {
+    const listContainer = document.getElementById(`comments-list-${postId}`);
+    if (!listContainer) return;
+    
+    try {
+        const response = await fetch(`http://localhost:3000/api/posts/${postId}/comments`);
+        if (response.ok) {
+            const comments = await response.json();
+            if (comments.length === 0) {
+                listContainer.innerHTML = `<div style="font-size:0.75rem;color:#64748b;padding:2px 0;">No comments yet.</div>`;
+                return;
+            }
+            
+            listContainer.innerHTML = comments.map(c => `
+                <div style="font-size: 0.8rem; margin-bottom: 4px; padding: 6px 10px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.04); text-align: left;">
+                    <strong style="color: #38bdf8;">${c.author}:</strong> 
+                    <span style="color: #cbd5e1; margin-left: 4px;">${c.content}</span>
+                </div>
+            `).join('');
+        }
+    } catch (err) {
+        console.error('Error fetching comments:', err);
+    }
+}
+
+/* LOAD POSTS FROM BACKEND */
+
+async function loadPosts(){
+
+const container =
+document.getElementById("postsContainer");
+
+try {
+    const response = await fetch('http://localhost:3000/api/posts');
+    if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+    }
+    const posts = await response.json();
+
+    /* DISPLAY POSTS */
+    container.innerHTML="";
+
+    if (posts.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;color:#64748b;">No posts on campus yet. Be the first to post! 🚀</div>`;
+        return;
+    }
+
+    posts.forEach((post,index)=>{
+
+    container.innerHTML += `
+
+    <div class="post-card">
+
+    <img src="${post.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800'}"
+    class="post-image">
+
+    <div class="post-content">
+
+    <div class="post-top">
+
+    <div class="user">
+
+    <img src="${post.authorImage || 'images/profile1.png'}">
+
+    <div>
+
+    <h3>${post.author || 'Campus Student'}</h3>
+
+    <p>${new Date(post.createdAt).toLocaleDateString()} ${new Date(post.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+
+    </div>
+
+    </div>
+
+    ${post.isAnnouncement ? `
+    <div class="live-badge" style="background:#8b5cf6;">
+    ANNOUNCEMENT
+    </div>
+    ` : `
+    <div class="live-badge">
+    CAMPUS
+    </div>
+    `}
+
+    </div>
+
+    <h2 class="post-title">
+    ${post.title}
+    </h2>
+
+    <p class="post-desc">
+    ${post.caption}
+    </p>
+
+    <div class="tags">
+
+    <div class="tag">
+    #Campus
+    </div>
+
+    <div class="tag">
+    #Trending
+    </div>
+
+    <div class="tag">
+    #SmartCampus
+    </div>
+
+    </div>
+
+    <!-- COMMENTS SECTION -->
+    <div style="margin-top: 15px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(15, 23, 42, 0.2); border-radius: 12px; text-align: left;">
+        <h4 style="font-size:0.8rem; text-transform:uppercase; color:#94a3b8; margin-bottom:8px; letter-spacing:0.05em;">Comments</h4>
+        <div id="comments-list-${post.id}" style="max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; padding-right: 4px;">
+            <div style="font-size:0.75rem;color:#64748b;">Loading comments...</div>
+        </div>
+    </div>
+
+    <div class="post-actions">
+
+    <div class="action-btn"
+    onclick="likePost('${post.id}')">
+
+    <span class="material-icons">
+    favorite
+    </span>
+
+    <span>${post.likes}</span>
+
+    </div>
+
+    <div class="action-btn"
+    onclick="commentPost('${post.id}')">
+
+    <span class="material-icons">
+    chat_bubble_outline
+    </span>
+
+    Comment
+
+    </div>
+
+    <div class="action-btn"
+    onclick="sharePost()">
+
+    <span class="material-icons">
+    share
+    </span>
+
+    Share
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    `;
+
+    });
+
+    // Fetch comments for all posts
+    posts.forEach(post => {
+        fetchCommentsForPost(post.id);
+    });
+
+} catch (err) {
+    console.error('Error loading posts:', err);
+    container.innerHTML = `<div style="text-align:center;padding:40px;color:#f87171;">❌ Cannot connect to backend server. Is it running?</div>`;
+}
+
+}
+
+/* LIKE POST IN BACKEND */
+
+async function likePost(postId){
+
+try {
+    const response = await fetch(`http://localhost:3000/api/posts/${postId}/like`, {
+        method: 'POST'
+    });
+
+    if (response.ok) {
+        /* RELOAD */
+        loadPosts();
+    } else {
+        alert('❌ Failed to like post');
+    }
+} catch (err) {
+    console.error('Like error:', err);
+    alert('❌ Network error liking post');
+}
+
+}
+
+/* COMMENT */
+
+async function commentPost(postId){
+
+const comment = prompt("Write your comment 🚀");
+if(!comment || comment.trim() === ""){
+    return;
+}
+
+const authorName = localStorage.getItem("userName") || "Campus Student";
+
+try {
+    const response = await fetch(`http://localhost:3000/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            author: authorName,
+            content: comment.trim()
+        })
+    });
+
+    if (response.ok) {
+        fetchCommentsForPost(postId);
+    } else {
+        alert("❌ Failed to post comment.");
+    }
+} catch (err) {
+    console.error('Comment error:', err);
+    alert("❌ Error sending comment to server.");
+}
+
+}
+
+/* SHARE */
+
+function sharePost(){
+
+alert("🔗 Post Shared Successfully!");
+
+}
+
+/* PAGE LOAD */
+
+window.onload=function(){
+
+loadPosts();
+
+}
+
+</script>
+
+</body>
+</html>

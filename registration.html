@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>My Registrations</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+
+<style>
+
+/* BODY */
+
+body{
+margin:0;
+font-family: 'Outfit', sans-serif;
+background: linear-gradient(135deg, #0f172a, #1e293b);
+color: #f1f5f9;
+padding-bottom:100px;
+}
+
+/* HEADER */
+
+.header{
+background: rgba(30, 41, 59, 0.75);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+padding:25px;
+color:white;
+border-bottom-left-radius:30px;
+border-bottom-right-radius:30px;
+text-align: center;
+}
+
+.header h1{
+margin:0;
+font-size: 2.2rem;
+font-weight: 700;
+background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.header p {
+margin-top: 10px;
+color: #94a3b8;
+font-size: 1rem;
+}
+
+/* CONTAINER */
+
+.container{
+padding:20px;
+max-width: 500px;
+margin: 0 auto;
+}
+
+/* CARD */
+
+.reg-card{
+background: rgba(30, 41, 59, 0.7);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+padding:20px;
+border-radius:24px;
+margin-bottom:20px;
+box-shadow:0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* TITLE */
+
+.reg-card h2{
+margin:0;
+color:#ffffff;
+font-size: 1.3rem;
+font-weight: 700;
+}
+
+/* DETAILS */
+
+.detail{
+margin-top:10px;
+color: #94a3b8;
+font-size: 0.95rem;
+}
+
+/* DELETE */
+
+.delete-btn{
+margin-top:20px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#ef4444,#f97316);
+color:white;
+font-size:0.95rem;
+font-weight:600;
+cursor:pointer;
+transition: all 0.3s ease;
+box-shadow:0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.delete-btn:hover {
+background: linear-gradient(135deg, #f87171, #f97316);
+transform: scale(1.02);
+}
+
+/* EMPTY */
+
+.empty{
+text-align:center;
+margin-top:60px;
+color: #94a3b8;
+font-size: 1.1rem;
+font-weight: 600;
+}
+
+/* NAVBAR */
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left: 50%;
+transform: translateX(-50%);
+width:100%;
+max-width: 500px;
+background: rgba(30, 41, 59, 0.85);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+display:flex;
+justify-content:space-around;
+align-items: center;
+padding:10px 0;
+box-shadow:0 -8px 32px rgba(0,0,0,0.3);
+border-top: 1px solid rgba(255, 255, 255, 0.08);
+border-top-left-radius: 24px;
+border-top-right-radius: 24px;
+z-index: 1000;
+}
+
+.nav-item{
+cursor:pointer;
+color: #94a3b8;
+padding: 10px;
+border-radius: 12px;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.nav-item .material-icons{
+font-size: 1.6rem;
+}
+
+.nav-item.active{
+color: #0ea5e9;
+background: rgba(14, 165, 233, 0.1);
+transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+color: #ffffff;
+background: rgba(255, 255, 255, 0.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<h1>🎟 My Registrations</h1>
+
+<p>
+Your registered campus events
+</p>
+
+</div>
+
+<!-- CONTAINER -->
+
+<div class="container"
+id="registrationsContainer">
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item"
+onclick="window.location.href='dashboard.html'">
+
+<span class="material-icons">
+home
+</span>
+
+</div>
+
+<div class="nav-item active">
+
+<span class="material-icons">
+event
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='addPost.html'">
+
+<span class="material-icons">
+add_box
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='clubs.html'">
+
+<span class="material-icons">
+groups
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='profile.html'">
+
+<span class="material-icons">
+person
+</span>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOAD REGISTRATIONS */
+
+function loadRegistrations(){
+
+const container =
+document.getElementById(
+"registrationsContainer"
+);
+
+let registrations =
+JSON.parse(
+localStorage.getItem(
+"registeredEvents"
+)
+) || [];
+
+/* EMPTY */
+
+if(registrations.length===0){
+
+container.innerHTML = `
+
+<div class="empty">
+
+No Registrations Yet 🚀
+
+</div>
+
+`;
+
+return;
+
+}
+
+/* CLEAR */
+
+container.innerHTML = "";
+
+/* SHOW DATA */
+
+registrations.forEach((item,index)=>{
+
+container.innerHTML += `
+
+<div class="reg-card">
+
+<h2>
+${item.event}
+</h2>
+
+<div class="detail">
+👤 ${item.name}
+</div>
+
+<div class="detail">
+📧 ${item.email}
+</div>
+
+<div class="detail">
+🏫 ${item.class}
+</div>
+
+<button class="delete-btn"
+onclick="deleteRegistration(${index})">
+
+Delete Registration
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* DELETE */
+
+function deleteRegistration(index){
+
+let registrations =
+JSON.parse(
+localStorage.getItem(
+"registeredEvents"
+)
+) || [];
+
+registrations.splice(index,1);
+
+localStorage.setItem(
+"registeredEvents",
+JSON.stringify(registrations)
+);
+
+loadRegistrations();
+
+}
+
+/* PAGE LOAD */
+
+window.onload=function(){
+
+loadRegistrations();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile – Smart Campus</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    padding-bottom: 100px;
+    min-height: 100vh;
+}
+
+/* CONTAINER */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* PROFILE CARD */
+.profile-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+}
+
+/* Profile Photo Upload */
+.profile-upload {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #1e293b;
+    border: 4px solid #1e293b;
+}
+
+#imageInput {
+    display: none;
+}
+
+.camera-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #0ea5e9;
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 3px solid #1e293b;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.camera-btn:hover {
+    background: #38bdf8;
+    transform: scale(1.1);
+}
+
+.user-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.user-email {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+/* DETAILS SECTION */
+.info-section {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.info-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #38bdf8;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-title .material-icons {
+    font-size: 1.1rem;
+}
+
+.info-content {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.joined-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.joined-item:last-child {
+    margin-bottom: 0;
+}
+
+.joined-tag {
+    background: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item .material-icons {
+    font-size: 1.6rem;
+}
+
+.nav-item.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+.badge-dot {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444;
+    animation: pulseBadge 1.5s infinite;
+}
+@keyframes pulseBadge {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>👤 My Profile</h1>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+        <div class="profile-upload">
+            <img id="profileImgEl" src="images/profile1.png" class="profile-img">
+            <input type="file" id="imageInput" accept="image/*">
+            <label for="imageInput" class="camera-btn">📷</label>
+        </div>
+        
+        <div class="user-name" id="profileName">Loading User...</div>
+        <div class="user-email" id="profileEmail">email@campus.com</div>
+
+        <!-- ACTIONS -->
+        <button class="logout-btn" onclick="logout()">
+            <span class="material-icons">logout</span>
+            Logout from Campus
+        </button>
+    </div>
+
+    <!-- REGISTERED EVENTS -->
+    <div class="info-section">
+        <div class="info-title">
+            <span class="material-icons">event_available</span>
+            Joined Clubs
+        </div>
+        <div class="info-content" id="clubsListContainer">
+            <div style="color: #64748b; font-size: 0.85rem;">You haven't joined any clubs yet.</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+    <div class="nav-item" onclick="window.location.href='dashboard.html'">
+        <span class="material-icons">home</span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='upcoming.html'" style="position: relative;">
+        <span class="material-icons">event</span>
+        <span class="badge-dot" id="eventsBadge" style="display: none;"></span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='addPost.html'">
+        <span class="material-icons">add_box</span>
+    </div>
+    <div class="nav-item" onclick="window.location.href='clubs.html'">
+        <span class="material-icons">groups</span>
+    </div>
+    <div class="nav-item active" onclick="window.location.href='profile.html'">
+        <span class="material-icons">person</span>
+    </div>
+</div>
+
+<script>
+// Authentication check
+if (localStorage.getItem("userLoggedIn") !== "true") {
+    window.location.href = "signIn.html";
+}
+
+// Load profile details from LocalStorage
+window.onload = async function() {
+    const name = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
+    const pic = localStorage.getItem("profileImage");
+    const joinedClubs = JSON.parse(localStorage.getItem("joinedClubs")) || [];
+
+    if (name) document.getElementById("profileName").textContent = name;
+    if (email) document.getElementById("profileEmail").textContent = email;
+    if (pic) document.getElementById("profileImgEl").src = pic;
+
+    // Load joined clubs list
+    const clubsContainer = document.getElementById("clubsListContainer");
+    if (joinedClubs.length > 0) {
+        clubsContainer.innerHTML = joinedClubs.map(club => `
+            <div class="joined-item">
+                <span>${club}</span>
+                <span class="joined-tag">Member</span>
+            </div>
+        `).join('');
+    }
+
+    // Check Events Notifications
+    try {
+        const response = await fetch('http://localhost:3000/api/events');
+        if (response.ok) {
+            const events = await response.json();
+            const seenCount = parseInt(localStorage.getItem("seenEventsCount") || "0");
+            if (events.length > seenCount) {
+                const badge = document.getElementById("eventsBadge");
+                if (badge) {
+                    badge.style.display = "block";
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error checking events:', err);
+    }
+
+    // Set active nav item
+    const navItems = document.querySelectorAll(".bottom-nav .nav-item");
+    navItems.forEach((item, index) => {
+        item.addEventListener("click", () => {
+            navItems.forEach(n => n.classList.remove("active"));
+            item.classList.add("active");
+            if (index === 0) window.location.href = 'dashboard.html';
+            else if (index === 1) window.location.href = 'upcoming.html';
+            else if (index === 2) window.location.href = 'addPost.html';
+            else if (index === 3) window.location.href = 'clubs.html';
+            else if (index === 4) window.location.href = 'profile.html';
+        });
+    });
+};
+
+// Handle profile photo upload change
+const imageInput = document.getElementById("imageInput");
+const profileImgEl = document.getElementById("profileImgEl");
+
+if (imageInput) {
+    imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (profileImgEl) {
+                    profileImgEl.src = e.target.result;
+                }
+                localStorage.setItem("profileImage", e.target.result);
+                alert("✅ Profile picture updated successfully!");
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Logout
+function logout() {
+    const confirmLogout = confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+        localStorage.removeItem("userLoggedIn");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
+        window.location.href = "signIn.html";
+    }
+}
+</script>
+
+</body>
+</html>

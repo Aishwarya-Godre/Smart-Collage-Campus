@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sign In – Smart Campus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #060d1a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 20% 20%, rgba(139,92,246,0.22) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 70%, rgba(236,72,153,0.18) 0%, transparent 60%);
+            animation: aurora 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes aurora {
+            0%   { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1;   transform: scale(1.05); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(30,41,59,0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 28px;
+            padding: 44px 40px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 60px rgba(139,92,246,0.1);
+            animation: slideUp 0.6s cubic-bezier(0.4,0,0.2,1) both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin-bottom: 28px;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .back-btn:hover { color: #a78bfa; }
+        .back-btn .material-icons-round { font-size: 1.1rem; }
+
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(139,92,246,0.15);
+            border: 1px solid rgba(139,92,246,0.3);
+            color: #a78bfa;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .icon-wrap {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(236,72,153,0.15));
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(139,92,246,0.2);
+        }
+
+        h2 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        h2 span {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(15,23,42,0.9);
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input { padding-right: 50px; }
+
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #475569;
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+        }
+
+        .eye-btn:hover { color: #a78bfa; }
+
+        .error-msg {
+            display: none;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.25);
+            color: #f87171;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25%      { transform: translateX(-8px); }
+            75%      { transform: translateX(8px); }
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(139,92,246,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139,92,246,0.5);
+        }
+
+        .btn-login:active { transform: translateY(0); }
+
+        .hint {
+            margin-top: 24px;
+            padding: 14px 16px;
+            background: rgba(139,92,246,0.08);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 12px;
+            font-size: 0.82rem;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .hint strong { color: #a78bfa; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        <span class="material-icons-round">arrow_back</span> Back to Home
+    </button>
+
+    <div class="admin-badge">
+        <span class="material-icons-round" style="font-size:0.9rem;">shield</span>
+        Admin Access
+    </div>
+
+    <div class="icon-wrap">🛡️</div>
+    <h2>Admin <span>Sign In</span></h2>
+    <p class="subtitle">Restricted to authorized campus administrators only.</p>
+
+    <div class="error-msg" id="adminError">❌ Invalid credentials. Please try again.</div>
+
+    <form id="adminLoginForm" onsubmit="adminLogin(event)">
+        <div class="form-group">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail" placeholder="Enter admin email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <div class="password-box">
+                <input type="password" id="adminPassword" placeholder="Enter password" required>
+                <button type="button" class="eye-btn" onclick="toggleAdminPassword()">
+                    <span class="material-icons-round" id="eyeIcon">visibility</span>
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="adminLoginBtn">
+            <span class="material-icons-round">admin_panel_settings</span>
+            Access Admin Panel
+        </button>
+    </form>
+
+    <div class="hint">
+        Demo credentials — Email: <strong>admin@campus.com</strong> &nbsp;·&nbsp; Password: <strong>admin123</strong>
+    </div>
+</div>
+
+<script>
+    async function adminLogin(e) {
+        e.preventDefault();
+        const email    = document.getElementById("adminEmail").value.trim();
+        const password = document.getElementById("adminPassword").value.trim();
+        const errorEl  = document.getElementById("adminError");
+
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/admin-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem("adminLoggedIn", "true");
+                window.location.href = "adminDashboard.html";
+            } else {
+                errorEl.textContent = "❌ " + (data.error || "Invalid credentials. Please try again.");
+                errorEl.style.display = "block";
+                setTimeout(() => errorEl.style.display = "none", 4000);
+            }
+        } catch (err) {
+            console.error('Admin login error:', err);
+            errorEl.textContent = "❌ Cannot connect to backend server. Is it running?";
+            errorEl.style.display = "block";
+            setTimeout(() => errorEl.style.display = "none", 4000);
+        }
+    }
+
+    function toggleAdminPassword() {
+        const input = document.getElementById("adminPassword");
+        const icon  = document.getElementById("eyeIcon");
+        if (input.type === "password") {
+            input.type = "text";
+            icon.textContent = "visibility_off";
+        } else {
+            input.type = "password";
+            icon.textContent = "visibility";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Campus</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    padding-bottom: 100px;
+}
+
+/* CONTAINER */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.header h2 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.header p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0ea5e9;
+}
+
+/* GRID */
+.grid {
+    margin-bottom: 25px;
+}
+
+/* CARD */
+.card {
+    padding: 30px 20px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* COLORS */
+.red { background: linear-gradient(135deg, #ef4444, #f97316); }
+.blue { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+.pink { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+.green { background: linear-gradient(135deg, #10b981, #14b8a6); }
+
+.card .material-icons {
+    font-size: 2.2rem;
+}
+
+/* POSTS */
+#postsContainer {
+    padding: 0;
+}
+
+/* POST */
+.feed-post {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* POST HEADER */
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+}
+
+.post-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-header h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.post-header p {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+/* IMAGE */
+.feed-post img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+}
+
+/* CONTENT */
+.feed-content {
+    padding: 16px;
+}
+
+.feed-content h3 {
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.feed-content p {
+    color: #94a3b8;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* ACTIONS */
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.2);
+}
+
+.action-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    color: #38bdf8;
+}
+
+.action-btn .material-icons {
+    font-size: 1.25rem;
+}
+
+/* MODAL */
+.post-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* BOX */
+.post-box {
+    width: 90%;
+    max-width: 420px;
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: popup 0.3s ease;
+}
+
+/* POPUP CODE */
+@keyframes popup {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* INPUT */
+.post-box input[type="text"],
+.post-box textarea {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.post-box input:focus,
+.post-box textarea:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+
+.post-box input[type="file"] {
+    margin-top: 15px;
+    color: #94a3b8;
+}
+
+/* BUTTON */
+.post-box button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.post-box button:hover {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+/* CLOSE */
+.close-btn {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 1000;
+}
+
+.nav-item {
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item .material-icons {
+    font-size: 1.6rem;
+}
+
+.nav-item.active {
+    color: #0ea5e9;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-item:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+.badge-dot {
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ef4444;
+    animation: pulseBadge 1.5s infinite;
+}
+@keyframes pulseBadge {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div>
+<h2>Hello Buddies 👋</h2>
+<p>Welcome To Smart Campus</p>
+</div>
+
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400"
+class="profile">
+
+</div>
+
+<!-- CARDS -->
+
+<!-- CREATE POST CARD -->
+
+<div class="grid">
+
+<div class="card green"
+onclick="openPostModal()">
+
+<span class="material-icons">
+add_circle
+</span>
+
+<h3>Create New Post</h3>
+
+<p style="margin-top:10px;font-size:14px;">
+Share your campus moments 🚀
+</p>
+
+</div>
+
+</div>
+
+<!-- POSTS -->
+
+<div id="postsContainer"></div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="post-modal"
+id="postModal">
+
+<div class="post-box">
+
+<span class="close-btn"
+onclick="closePostModal()">
+✖
+</span>
+
+<h2>Create New Post 🚀</h2>
+
+<input
+type="text"
+id="postTitle"
+placeholder="Write title...">
+
+<textarea
+id="postCaption"
+placeholder="Write caption..."
+rows="4"></textarea>
+
+<input
+type="file"
+id="postImage"
+accept="image/*">
+
+<button onclick="addPost()">
+Post Now
+</button>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div class="nav-item"
+onclick="window.location.href='dashboard.html'">
+
+<span class="material-icons">
+home
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='upcoming.html'" style="position: relative;">
+
+<span class="material-icons">
+event
+</span>
+<span class="badge-dot" id="eventsBadge" style="display: none;"></span>
+
+</div>
+
+<div class="nav-item active"
+onclick="window.location.href='addPost.html'">
+
+<span class="material-icons">
+add_box
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='clubs.html'">
+
+<span class="material-icons">
+groups
+</span>
+
+</div>
+
+<div class="nav-item"
+onclick="window.location.href='profile.html'">
+
+<span class="material-icons">
+person
+</span>
+
+</div>
+
+</div>
+
+<script>
+
+/* OPEN MODAL */
+
+function openPostModal(){
+
+document.getElementById("postModal")
+.style.display="flex";
+
+}
+
+/* CLOSE MODAL */
+
+function closePostModal(){
+
+document.getElementById("postModal")
+.style.display="none";
+
+}
+
+/* ADD POST TO BACKEND */
+
+async function addPost(){
+
+const title =
+document.getElementById("postTitle").value.trim();
+
+const caption =
+document.getElementById("postCaption").value.trim();
+
+const image =
+document.getElementById("postImage").files[0];
+
+if(title==="" || caption==="" || !image){
+
+alert("Please fill all details");
+return;
+
+}
+
+const reader = new FileReader();
+
+reader.onload = async function(e){
+
+const authorName = localStorage.getItem("userName") || "Campus Student";
+const authorPic = localStorage.getItem("profileImage") || "images/profile1.png";
+
+const postPayload = {
+    title: title,
+    caption: caption,
+    image: e.target.result,
+    author: authorName,
+    authorImage: authorPic
+};
+
+try {
+    const response = await fetch('http://localhost:3000/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postPayload)
+    });
+
+    if (response.ok) {
+        alert("✅ Post Added Successfully!");
+        loadPosts();
+        closePostModal();
+
+        document.getElementById("postTitle").value="";
+        document.getElementById("postCaption").value="";
+        document.getElementById("postImage").value="";
+    } else {
+        const data = await response.json();
+        alert("❌ Failed to add post: " + (data.error || "Unknown error"));
+    }
+} catch (err) {
+    console.error('Add post error:', err);
+    alert("❌ Error sending post to backend.");
+}
+
+};
+
+reader.readAsDataURL(image);
+
+}
+
+async function fetchCommentsForPost(postId) {
+    const listContainer = document.getElementById(`comments-list-${postId}`);
+    if (!listContainer) return;
+    
+    try {
+        const response = await fetch(`http://localhost:3000/api/posts/${postId}/comments`);
+        if (response.ok) {
+            const comments = await response.json();
+            if (comments.length === 0) {
+                listContainer.innerHTML = `<div style="font-size:0.75rem;color:#64748b;padding:2px 0;">No comments yet.</div>`;
+                return;
+            }
+            
+            listContainer.innerHTML = comments.map(c => `
+                <div style="font-size: 0.8rem; margin-bottom: 4px; padding: 6px 10px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.04);">
+                    <strong style="color: #38bdf8;">${c.author}:</strong> 
+                    <span style="color: #cbd5e1; margin-left: 4px;">${c.content}</span>
+                </div>
+            `).join('');
+        }
+    } catch (err) {
+        console.error('Error fetching comments:', err);
+    }
+}
+
+async function loadPosts(){
+
+const container =
+document.getElementById("postsContainer");
+
+try {
+    const response = await fetch('http://localhost:3000/api/posts');
+    if (!response.ok) {
+        throw new Error('Failed to load posts');
+    }
+    const posts = await response.json();
+
+    container.innerHTML="";
+
+    if (posts.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;color:#64748b;">No posts yet. Be the first to share your moments! 📸</div>`;
+        return;
+    }
+
+    posts.forEach((post,index)=>{
+
+    container.innerHTML += `
+
+    <div class="feed-post">
+
+    <div class="post-header">
+
+    <img src="${post.authorImage || 'images/profile1.png'}"
+    class="post-profile">
+
+    <div>
+    <h4>${post.author || 'Campus Student'}</h4>
+    <p>${new Date(post.createdAt).toLocaleDateString()} ${new Date(post.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+    </div>
+
+    </div>
+
+    <img src="${post.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800'}">
+
+    <div class="feed-content">
+
+    <h3>${post.title}</h3>
+
+    <p>${post.caption}</p>
+
+    </div>
+
+    <!-- COMMENTS SECTION -->
+    <div style="padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(15, 23, 42, 0.15);">
+        <h4 style="font-size:0.8rem; text-transform:uppercase; color:#94a3b8; margin-bottom:8px; letter-spacing:0.05em;">Comments</h4>
+        <div id="comments-list-${post.id}" style="max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; padding-right: 4px;">
+            <div style="font-size:0.75rem;color:#64748b;">Loading comments...</div>
+        </div>
+    </div>
+
+    <div class="post-actions">
+
+    <div class="action-btn"
+    onclick="likePost('${post.id}')">
+
+    <span class="material-icons">
+    favorite
+    </span>
+
+    <span>${post.likes}</span>
+
+    </div>
+
+    <div class="action-btn"
+    onclick="commentPost('${post.id}')">
+
+    <span class="material-icons">
+    chat_bubble_outline
+    </span>
+
+    Comment
+
+    </div>
+
+    <div class="action-btn"
+    onclick="sharePost()">
+
+    <span class="material-icons">
+    share
+    </span>
+
+    Share
+
+    </div>
+
+    <div class="action-btn"
+    onclick="deletePost('${post.id}')"
+    style="color:#f87171;">
+
+    <span class="material-icons">
+    delete
+    </span>
+
+    Delete
+
+    </div>
+
+    </div>
+
+    </div>
+
+    `;
+
+    });
+
+    // Load comments for all posts
+    posts.forEach(post => {
+        fetchCommentsForPost(post.id);
+    });
+
+} catch (err) {
+    console.error('Error fetching posts:', err);
+    container.innerHTML = `<div style="text-align:center;padding:40px;color:#f87171;">❌ Cannot connect to backend server. Is it running?</div>`;
+}
+
+}
+
+/* LIKE POST */
+
+async function likePost(postId){
+
+try {
+    const response = await fetch(`http://localhost:3000/api/posts/${postId}/like`, {
+        method: 'POST'
+    });
+
+    if (response.ok) {
+        loadPosts();
+    } else {
+        alert('❌ Failed to like post');
+    }
+} catch (err) {
+    console.error('Like error:', err);
+}
+
+}
+
+/* DELETE POST */
+
+async function deletePost(postId) {
+    if (!confirm("Are you sure you want to delete this post?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert("🗑️ Post deleted successfully!");
+            loadPosts();
+        } else {
+            const data = await response.json();
+            alert("❌ Failed to delete post: " + (data.error || "Unknown error"));
+        }
+    } catch (err) {
+        console.error('Delete post error:', err);
+        alert("❌ Network error deleting post.");
+    }
+}
+
+/* PAGE LOAD */
+
+window.onload=async function(){
+
+const userName = localStorage.getItem("userName");
+const userPic = localStorage.getItem("profileImage");
+
+if (userName) {
+    const greetingHeader = document.querySelector(".header h2");
+    if (greetingHeader) {
+        greetingHeader.textContent = `Hello ${userName} 👋`;
+    }
+}
+
+if (userPic) {
+    const profileImg = document.querySelector(".header img.profile");
+    if (profileImg) {
+        profileImg.src = userPic;
+    }
+}
+
+// Check Events Notifications
+try {
+    const response = await fetch('http://localhost:3000/api/events');
+    if (response.ok) {
+        const events = await response.json();
+        const seenCount = parseInt(localStorage.getItem("seenEventsCount") || "0");
+        if (events.length > seenCount) {
+            const badge = document.getElementById("eventsBadge");
+            if (badge) {
+                badge.style.display = "block";
+            }
+        }
+    }
+} catch (err) {
+    console.error('Error checking events:', err);
+}
+
+loadPosts();
+
+}
+
+/* COMMENT */
+
+async function commentPost(postId){
+
+const comment = prompt("Write your comment 🚀");
+if(!comment || comment.trim() === ""){
+    return;
+}
+
+const authorName = localStorage.getItem("userName") || "Campus Student";
+
+try {
+    const response = await fetch(`http://localhost:3000/api/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            author: authorName,
+            content: comment.trim()
+        })
+    });
+
+    if (response.ok) {
+        fetchCommentsForPost(postId);
+    } else {
+        alert("❌ Failed to post comment.");
+    }
+} catch (err) {
+    console.error('Comment error:', err);
+    alert("❌ Error sending comment to server.");
+}
+
+}
+
+/* SHARE */
+
+function sharePost(index){
+
+alert("🔗 Post Shared Successfully!");
+
+}
+
+
+
+/* BOTTOM NAV ACTIVE */
+
+const navItems =
+document.querySelectorAll(".nav-item");
+
+navItems.forEach((item,index)=>{
+
+item.addEventListener("click",()=>{
+
+/* REMOVE ACTIVE */
+
+navItems.forEach(nav=>{
+nav.classList.remove("active");
+});
+
+/* ADD ACTIVE */
+
+item.classList.add("active");
+
+/* NAVIGATION ACTIONS */
+
+if(index===0){
+
+window.location.href = "dashboard.html";
+
+}
+
+else if(index===1){
+
+window.location.href = "upcoming.html";
+
+}
+
+else if(index===2){
+
+openPostModal();
+
+}
+
+else if(index===3){
+
+window.location.href = "clubs.html";
+
+}
+
+else if(index===4){
+
+window.location.href = "profile.html";
+
+}
+
+});
+
+});
+</script>
+
+</body>
+</html>

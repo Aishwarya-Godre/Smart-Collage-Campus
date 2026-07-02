@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – Smart Campus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #060d1a;
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding-bottom: 40px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(139,92,246,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(236,72,153,0.15) 0%, transparent 60%);
+            animation: aurora 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes aurora {
+            0%   { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1;   transform: scale(1.05); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px 18px;
+        }
+
+        /* ── HEADER ── */
+        .topbar {
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.12));
+            border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 24px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 50px rgba(139,92,246,0.08);
+            animation: slideDown 0.5s ease both;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .topbar-left h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .topbar-left p {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .admin-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(139,92,246,0.15);
+            border: 1px solid rgba(139,92,246,0.3);
+            color: #a78bfa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.25);
+            color: #f87171;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        /* ── STATS ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+            animation: fadeUp 0.6s ease both;
+            animation-delay: 0.1s;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-box {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 20px 12px 16px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+
+        .stat-box:hover { transform: translateY(-4px); }
+
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-lbl {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #475569;
+        }
+
+        .c-purple { color: #a78bfa; text-shadow: 0 0 12px rgba(167,139,250,0.5); }
+        .c-cyan   { color: #38bdf8; text-shadow: 0 0 12px rgba(56,189,248,0.5); }
+        .c-pink   { color: #f472b6; text-shadow: 0 0 12px rgba(244,114,182,0.5); }
+
+        /* ── SECTION ── */
+        .section {
+            margin-bottom: 22px;
+            animation: fadeUp 0.6s ease both;
+            animation-delay: 0.15s;
+        }
+
+        .sec-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .sec-head h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .sec-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(139,92,246,0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        /* ── ANNOUNCEMENT CARD ── */
+        .announce-card {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 20px;
+            padding: 22px;
+            backdrop-filter: blur(12px);
+        }
+
+        .announce-card textarea {
+            width: 100%;
+            background: rgba(6,13,26,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 14px;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+
+        .announce-card textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
+        }
+
+        .announce-card textarea::placeholder { color: #334155; }
+
+        .announce-card input[type="text"] {
+            width: 100%;
+            background: rgba(6,13,26,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .announce-card input[type="text"]:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
+        }
+
+        .announce-card input::placeholder { color: #334155; }
+
+        .btn-post {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(139,92,246,0.3);
+        }
+
+        .btn-post:hover {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139,92,246,0.45);
+        }
+
+        /* ── REGISTRATIONS LIST ── */
+        .reg-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .reg-item {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .reg-item:hover {
+            border-color: rgba(139,92,246,0.25);
+            transform: translateX(4px);
+        }
+
+        .reg-info h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .reg-info p {
+            font-size: 0.78rem;
+            color: #475569;
+        }
+
+        .btn-delete {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.2);
+            color: #f87171;
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+        }
+
+        /* ── POSTS LIST ── */
+        .posts-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .post-item {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .post-item:hover {
+            border-color: rgba(139,92,246,0.25);
+            transform: translateX(4px);
+        }
+
+        .post-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .post-info h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .post-info p {
+            font-size: 0.76rem;
+            color: #475569;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center;
+            padding: 32px;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .empty-state .material-icons-round {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+            opacity: 0.4;
+        }
+
+        /* ── SUCCESS TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #34d399;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            backdrop-filter: blur(12px);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+            z-index: 9999;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* ── DANGER ZONE ── */
+        .danger-zone {
+            background: rgba(239,68,68,0.06);
+            border: 1px solid rgba(239,68,68,0.15);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .btn-danger {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.25);
+            color: #f87171;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-danger:first-child { margin-top: 0; }
+
+        .btn-danger:hover {
+            background: rgba(239,68,68,0.25);
+            border-color: #ef4444;
+        }
+
+        /* DIVIDER */
+        hr { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="admin-tag">
+                <span class="material-icons-round" style="font-size:0.85rem;">shield</span>
+                Admin Panel
+            </div>
+            <h2>🛡️ Admin Dashboard</h2>
+            <p>Smart Campus Control Center</p>
+        </div>
+        <button class="logout-btn" onclick="adminLogout()">
+            <span class="material-icons-round" style="font-size:1rem;">logout</span>
+            Logout
+        </button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-num c-purple" id="statStudents">0</div>
+            <div class="stat-lbl">Students</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num c-cyan" id="statPosts">0</div>
+            <div class="stat-lbl">Posts</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num c-pink" id="statRegs">0</div>
+            <div class="stat-lbl">Registrations</div>
+        </div>
+    </div>
+
+    <!-- POST ANNOUNCEMENT -->
+    <div class="section">
+        <div class="sec-head">
+            <h3>📢 Post Announcement</h3>
+            <span class="sec-badge">Broadcast</span>
+        </div>
+        <div class="announce-card">
+            <input type="text" id="announcTitle" placeholder="Announcement title...">
+            <textarea id="announcText" rows="3" placeholder="Write your announcement for all students..."></textarea>
+            <button class="btn-post" onclick="postAnnouncement()">
+                <span class="material-icons-round" style="font-size:1.1rem;">campaign</span>
+                Broadcast to Students
+            </button>
+        </div>
+    </div>
+
+    <!-- STUDENT REGISTRATIONS -->
+    <div class="section">
+        <div class="sec-head">
+            <h3>🎟️ Event Registrations</h3>
+            <span class="sec-badge" id="regCountBadge">0</span>
+        </div>
+        <div class="reg-list" id="regList">
+            <div class="empty-state">
+                <span class="material-icons-round">event_busy</span>
+                No registrations yet
+            </div>
+        </div>
+    </div>
+
+    <!-- CAMPUS POSTS -->
+    <div class="section">
+        <div class="sec-head">
+            <h3>📸 Student Posts</h3>
+            <span class="sec-badge" id="postCountBadge">0</span>
+        </div>
+        <div class="posts-list" id="postsList">
+            <div class="empty-state">
+                <span class="material-icons-round">photo_library</span>
+                No posts yet
+            </div>
+        </div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="section">
+        <div class="sec-head">
+            <h3>⚠️ Admin Actions</h3>
+        </div>
+        <div class="danger-zone">
+            <button class="btn-danger" onclick="clearAllPosts()">
+                <span class="material-icons-round" style="font-size:1rem;">delete_sweep</span>
+                Clear All Student Posts
+            </button>
+            <hr>
+            <button class="btn-danger" onclick="clearAllRegistrations()">
+                <span class="material-icons-round" style="font-size:1rem;">playlist_remove</span>
+                Clear All Registrations
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Action successful!</div>
+
+<script>
+    // ── AUTH GUARD ──
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+        window.location.href = "adminSignIn.html";
+    }
+
+    // ── LOGOUT ──
+    function adminLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem("adminLoggedIn");
+            window.location.href = "index.html";
+        }
+    }
+
+    // ── TOAST ──
+    function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3000);
+    }
+
+    // ── LOAD STATS ──
+    async function loadStats() {
+        try {
+            const postsRes = await fetch('http://localhost:3000/api/posts');
+            const regsRes  = await fetch('http://localhost:3000/api/events/registrations');
+            const usersRes = await fetch('http://localhost:3000/api/admin/users/count');
+
+            if (!postsRes.ok || !regsRes.ok || !usersRes.ok) throw new Error('Failed to load stats');
+
+            const posts = await postsRes.json();
+            const regs  = await regsRes.json();
+            const users = await usersRes.json();
+
+            // Set student count dynamically
+            document.getElementById("statStudents").textContent = users.count;
+            document.getElementById("statPosts").textContent    = posts.length;
+            document.getElementById("statRegs").textContent     = regs.length;
+            document.getElementById("regCountBadge").textContent = regs.length;
+            document.getElementById("postCountBadge").textContent = posts.length;
+        } catch (err) {
+            console.error('Error loading stats:', err);
+        }
+    }
+
+    // ── LOAD REGISTRATIONS ──
+    async function loadRegistrations() {
+        const list = document.getElementById("regList");
+        try {
+            const response = await fetch('http://localhost:3000/api/events/registrations');
+            if (!response.ok) throw new Error('Failed to fetch registrations');
+            const regs = await response.json();
+
+            if (regs.length === 0) {
+                list.innerHTML = `<div class="empty-state"><span class="material-icons-round">event_busy</span>No registrations yet</div>`;
+                return;
+            }
+
+            list.innerHTML = regs.map((r) => `
+                <div class="reg-item">
+                    <div class="reg-info">
+                        <h4>🎟️ ${r.event || "Event"}</h4>
+                        <p>👤 ${r.name || "–"} &nbsp;·&nbsp; 📧 ${r.email || "–"} &nbsp;·&nbsp; 🏫 ${r.class || "–"}</p>
+                    </div>
+                    <button class="btn-delete" onclick="deleteReg('${r.id}')">Remove</button>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error('Error loading registrations:', err);
+            list.innerHTML = `<div class="empty-state" style="color:#f87171;"><span class="material-icons-round">error</span>Error loading registrations</div>`;
+        }
+    }
+
+    // ── DELETE REGISTRATION ──
+    async function deleteReg(regId) {
+        if (!confirm("Are you sure you want to remove this registration?")) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/events/registrations/${regId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                loadRegistrations();
+                loadStats();
+                showToast("✅ Registration removed!");
+            } else {
+                alert("❌ Failed to remove registration");
+            }
+        } catch (err) {
+            console.error('Delete registration error:', err);
+            alert("❌ Network error removing registration");
+        }
+    }
+
+    // ── LOAD POSTS ──
+    async function loadPosts() {
+        const list  = document.getElementById("postsList");
+        try {
+            const response = await fetch('http://localhost:3000/api/posts');
+            if (!response.ok) throw new Error('Failed to fetch posts');
+            const posts = await response.json();
+
+            if (posts.length === 0) {
+                list.innerHTML = `<div class="empty-state"><span class="material-icons-round">photo_library</span>No posts yet</div>`;
+                return;
+            }
+
+            list.innerHTML = posts.map((p) => `
+                <div class="post-item">
+                    <img src="${p.image || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800'}" class="post-thumb" alt="Post">
+                    <div class="post-info" style="flex:1">
+                        <h4>${p.title}</h4>
+                        <p>${p.caption ? p.caption.substring(0,60) : ""}...</p>
+                    </div>
+                    <button class="btn-delete" onclick="deletePost('${p.id}')">Delete</button>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error('Error loading posts:', err);
+            list.innerHTML = `<div class="empty-state" style="color:#f87171;"><span class="material-icons-round">error</span>Error loading posts</div>`;
+        }
+    }
+
+    // ── DELETE POST ──
+    async function deletePost(postId) {
+        if (!confirm("Are you sure you want to delete this post?")) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/posts/${postId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                loadPosts();
+                loadStats();
+                showToast("🗑️ Post deleted!");
+            } else {
+                alert("❌ Failed to delete post");
+            }
+        } catch (err) {
+            console.error('Delete post error:', err);
+            alert("❌ Network error deleting post");
+        }
+    }
+
+    // ── POST ANNOUNCEMENT ──
+    async function postAnnouncement() {
+        const title = document.getElementById("announcTitle").value.trim();
+        const message  = document.getElementById("announcText").value.trim();
+
+        if (!title || !message) {
+            alert("⚠️ Please fill in both title and message!");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/admin/announcement', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, message })
+            });
+
+            if (response.ok) {
+                document.getElementById("announcTitle").value = "";
+                document.getElementById("announcText").value  = "";
+                loadPosts();
+                loadStats();
+                showToast("📢 Announcement broadcast to students!");
+            } else {
+                alert("❌ Failed to send announcement");
+            }
+        } catch (err) {
+            console.error('Broadcast error:', err);
+            alert("❌ Network error sending announcement");
+        }
+    }
+
+    // ── CLEAR ALL POSTS ──
+    async function clearAllPosts() {
+        if (confirm("Delete ALL student posts? This cannot be undone!")) {
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/clear-posts', {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadPosts();
+                    loadStats();
+                    showToast("🗑️ All posts cleared!");
+                } else {
+                    alert("❌ Failed to clear posts");
+                }
+            } catch (err) {
+                console.error('Clear posts error:', err);
+                alert("❌ Network error clearing posts");
+            }
+        }
+    }
+
+    // ── CLEAR ALL REGISTRATIONS ──
+    async function clearAllRegistrations() {
+        if (confirm("Clear ALL event registrations? This cannot be undone!")) {
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/clear-registrations', {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadRegistrations();
+                    loadStats();
+                    showToast("🗑️ All registrations cleared!");
+                } else {
+                    alert("❌ Failed to clear registrations");
+                }
+            } catch (err) {
+                console.error('Clear registrations error:', err);
+                alert("❌ Network error clearing registrations");
+            }
+        }
+    }
+
+    // ── INIT ──
+    window.onload = function () {
+        loadStats();
+        loadRegistrations();
+        loadPosts();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus – Welcome Portal</title>
+    <meta name="description" content="Welcome to Smart Campus. Connect with college life, events, clubs, and updates in real-time.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        /* Modern Reset and CSS Variables */
+        :root {
+            --bg-color: #050b14;
+            --card-bg-student: rgba(14, 165, 233, 0.05);
+            --card-bg-admin: rgba(139, 92, 246, 0.05);
+            --accent-student: #0ea5e9;
+            --accent-admin: #8b5cf6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glow-student: rgba(14, 165, 233, 0.15);
+            --glow-admin: rgba(139, 92, 246, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Aurora Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.55;
+            animation: floatOrb 20s infinite alternate;
+        }
+
+        .orb-cyan {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-purple {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-green {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            top: 40%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, 60px) scale(1.1); }
+            100% { transform: translate(-20px, -40px) scale(0.9); }
+        }
+
+        /* Grid Background Pattern */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .page-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 950px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            animation: entryFade 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes entryFade {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.45);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 40px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 
+                0 30px 70px rgba(0, 0, 0, 0.5),
+                0 0 1px 1px rgba(255, 255, 255, 0.05) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        .hero-logo-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-logo-glow {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(5px);
+            z-index: 0;
+        }
+
+        .hero-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            transition: transform 0.4s ease;
+        }
+
+        .hero:hover .hero-image {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .hero-text h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text h1 span {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ── INTERACTIVE FEATURES GRID ── */
+        .features-overview {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .feature-chip {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1.5px solid var(--glass-border);
+            padding: 10px 18px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .feature-chip:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .feature-chip .material-icons-round {
+            font-size: 1.25rem;
+        }
+
+        .fc-posts { --icon-color: #38bdf8; }
+        .fc-events { --icon-color: #a78bfa; }
+        .fc-clubs { --icon-color: #34d399; }
+        .fc-notif { --icon-color: #fb7185; }
+
+        .feature-chip .material-icons-round {
+            color: var(--icon-color);
+            text-shadow: 0 0 10px var(--icon-color);
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(148, 163, 184, 0.5);
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .section-label::before, .section-label::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 1px;
+            background: rgba(148, 163, 184, 0.2);
+        }
+
+        .section-label::before { left: -50px; }
+        .section-label::after { right: -50px; }
+
+        /* ── DUAL PORTALS ── */
+        .portals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            width: 100%;
+        }
+
+        .portal-card {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 36px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.12;
+            top: -50px;
+            left: -50px;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .portal-student::before { background: var(--accent-student); }
+        .portal-admin::before { background: var(--accent-admin); }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 30px var(--glow-color);
+        }
+
+        .portal-student {
+            --accent-color: var(--accent-student);
+            --glow-color: var(--glow-student);
+        }
+
+        .portal-admin {
+            --accent-color: var(--accent-admin);
+            --glow-color: var(--glow-admin);
+        }
+
+        .portal-badge {
+            align-self: flex-start;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .portal-card:hover .portal-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+        }
+
+        .portal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .portal-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .portal-student .portal-icon {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .portal-admin .portal-icon {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .portal-card:hover .portal-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .portal-info h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .portal-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .portal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        /* Buttons Styling */
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+        }
+
+        .btn-student-primary {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-student-primary:hover {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn-student-secondary {
+            background: rgba(14, 165, 233, 0.08);
+            color: #38bdf8;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .btn-student-secondary:hover {
+            background: rgba(14, 165, 233, 0.15);
+            border-color: rgba(14, 165, 233, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-admin-primary {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-admin-primary:hover {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn .material-icons-round {
+            font-size: 1.15rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .material-icons-round {
+            transform: translateX(4px);
+        }
+
+        /* ── FOOTER ── */
+        .footer-note {
+            font-size: 0.8rem;
+            color: #475569;
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-note span {
+            color: #ef4444;
+            animation: beat 1.2s infinite alternate;
+        }
+
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px;
+            }
+            .hero-image {
+                width: 120px;
+                height: 120px;
+            }
+            .hero-text h1 { font-size: 2.1rem; }
+            .portals {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .section-label::before, .section-label::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Grid Layout Backgrounds -->
+    <div class="grid-bg"></div>
+    <div class="orb orb-cyan"></div>
+    <div class="orb orb-purple"></div>
+    <div class="orb orb-green"></div>
+
+    <div class="page-wrapper">
+
+        <!-- HERO BRAND CARD -->
+        <div class="hero">
+            <div class="hero-logo-container">
+                <div class="hero-logo-glow"></div>
+                <!-- Try to render Gramin Campus Logo, fall back to default profile logo -->
+                <img src="images/gramin-technical-campus" alt="Gramin Technical Campus" class="hero-image"
+                     onerror="this.src='images/logo.png'">
+            </div>
+            <div class="hero-text">
+                <h1>Welcome to <br><span>Smart Campus 🎓</span></h1>
+                <p>An interactive, state-of-the-art portal connecting Gramin Technical Campus students and administration. Broadcast announcements, manage events, share posts, and collaborate on clubs in real time.</p>
+            </div>
+        </div>
+
+        <!-- APP HIGHLIGHT CHIPS -->
+        <div class="features-overview">
+            <div class="feature-chip fc-posts">
+                <span class="material-icons-round">photo_library</span>
+                <span>Live Feed & Likes</span>
+            </div>
+            <div class="feature-chip fc-events">
+                <span class="material-icons-round">calendar_today</span>
+                <span>Event Registrations</span>
+            </div>
+            <div class="feature-chip fc-clubs">
+                <span class="material-icons-round">people_alt</span>
+                <span>Student Club Hub</span>
+            </div>
+            <div class="feature-chip fc-notif">
+                <span class="material-icons-round">notifications_active</span>
+                <span>Real-time Badges</span>
+            </div>
+        </div>
+
+        <!-- PORTAL SELECTOR LABEL -->
+        <div class="section-label">Select your portal to continue</div>
+
+        <!-- DUAL PORTALS -->
+        <div class="portals">
+
+            <!-- STUDENT PORTAL -->
+            <div class="portal-card portal-student">
+                <span class="portal-badge">Student Access</span>
+                <div class="portal-header">
+                    <div class="portal-icon">🎒</div>
+                    <div class="portal-info">
+                        <h2>Student Portal</h2>
+                        <p>Explore clubs, join events, upload profiles, and publish campus moments.</p>
+                    </div>
+                </div>
+                <div class="portal-actions">
+                    <a href="signIn.html" class="btn btn-student-primary" id="studentLoginBtn">
+                        Sign In
+                        <span class="material-icons-round">login</span>
+                    </a>
+                    <a href="signUp.html" class="btn btn-student-secondary" id="studentSignupBtn">
+                        Create Account
+                        <span class="material-icons-round">person_add</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ADMIN PORTAL -->
+            <div class="portal-card portal-admin">
+                <span class="portal-badge">Staff Access</span>
+                <div class="portal-header">
+                    <div class="portal-icon">🛡️</div>
+                    <div class="portal-info">
+                        <h2>Admin Portal</h2>
+                        <p>Moderate student posts, accept registrations, and broadcast live alerts.</p>
+                    </div>
+                </div>
+                <div class="portal-actions">
+                    <a href="adminSignIn.html" class="btn btn-admin-primary" id="adminLoginBtn">
+                        Admin Sign In
+                        <span class="material-icons-round">admin_panel_settings</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER BRANDING -->
+        <div class="footer-note">
+            Made with <span>❤️</span> for Gramin Technical Campus · © 2026
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

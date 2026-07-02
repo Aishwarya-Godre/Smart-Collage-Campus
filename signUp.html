@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account – Smart Campus</title>
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: 'Outfit', sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #f1f5f9;
+    }
+    .card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
+        max-width: 480px;
+        width: 100%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        margin-bottom: 20px;
+        align-self: flex-start;
+    }
+    .back-btn:hover {
+        color: #38bdf8;
+    }
+    h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    /* Profile Upload */
+    .profile-upload {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 30px auto;
+        border-radius: 50%;
+        padding: 4px;
+        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2);
+    }
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #1e293b;
+        border: 4px solid #1e293b;
+    }
+    #imageInput {
+        display: none;
+    }
+    .camera {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #0ea5e9;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid #1e293b;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+    .camera:hover {
+        background: #38bdf8;
+        transform: scale(1.1);
+    }
+    /* Form */
+    .form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+    .form label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .form input {
+        width: 100%;
+        padding: 14px 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #ffffff;
+        font-size: 1rem;
+        font-family: inherit;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    .form input:focus {
+        outline: none;
+        border-color: #0ea5e9;
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+    }
+    .form button {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        color: #ffffff;
+        border: none;
+        padding: 14px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+    .form button:hover {
+        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(14, 165, 233, 0.4);
+    }
+    .form button:active {
+        transform: translateY(0);
+    }
+    .signIn {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #94a3b8;
+    }
+    .signIn a {
+        color: #38bdf8;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+    .signIn a:hover {
+        color: #0ea5e9;
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <div class="back-btn" onclick="goBack()">
+        <span>←</span> Back
+    </div>
+    
+    <h2>Create New Account</h2>
+
+    <div class="profile-upload">
+        <img id="profileImage" src="images/profile1.png" class="profile-img">
+        <input type="file" id="imageInput">
+        <label for="imageInput" class="camera">📷</label>
+    </div>
+
+    <form class="form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter Full Name">
+
+        <label for="email">College Email</label>
+        <input type="email" id="email" placeholder="Enter College Email">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create Password">
+
+        <button type="button" onclick="createAccount()">Create Account</button>
+
+        <div class="signIn">
+            Already have an account?
+            <a href="signIn.html">Sign In Here</a>
+        </div>
+    </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
